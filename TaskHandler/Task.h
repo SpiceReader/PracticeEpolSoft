@@ -27,6 +27,17 @@ public:
     Task();
 
     /**
+     * @return ID of current task
+     */
+    unsigned int getTaskId() const;
+
+    /**
+     * @brief sets ID of current task
+     * @param taskId ID to be set
+     */
+    void setTaskId(unsigned int taskId);
+
+    /**
      * @return name of current task
      */
     const std::string getTaskName() const;
@@ -49,6 +60,7 @@ public:
     std::vector<std::string> getComments();
 
 private:
+    unsigned int mTaskId;
     std::string mTaskName;
     std::vector<std::string> mComments;
 };

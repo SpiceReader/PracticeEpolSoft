@@ -17,12 +17,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     GUI/mainwindow.cpp \
-    Task.cpp \
+    TaskHandler/SingletonTaskHandler.cpp \
+    TaskHandler/Task.cpp \
     main.cpp
 
 HEADERS += \
     GUI/mainwindow.h \
-    Task.h
+    TaskHandler/SingletonTaskHandler.h \
+    TaskHandler/Task.h
 
 FORMS += \
     GUI/mainwindow.ui

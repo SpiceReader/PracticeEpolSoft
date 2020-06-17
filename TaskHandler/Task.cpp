@@ -9,6 +9,16 @@ Task::Task()
     std::cout << "Creates empty task" << std::endl;
 }
 
+unsigned int Task::getTaskId() const
+{
+    return mTaskId;
+}
+
+void Task::setTaskId(unsigned int taskId)
+{
+    mTaskId = taskId;
+}
+
 const std::string Task::getTaskName() const
 {
     return mTaskName;
