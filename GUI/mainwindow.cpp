@@ -13,3 +13,14 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+void MainWindow::on_saveButton_clicked()
+{
+
+}
+
+void MainWindow::on_clearButton_clicked()
+{
+    ui->taskName->setText("");
+    ui->taskDescription->setText("");
+}
