@@ -22,7 +22,7 @@ bool DbApi::openDb(QString pathToDb){
         "\"id\"	INTEGER NOT NULL UNIQUE,"
         "\"name\"	TEXT NOT NULL,"
         "\"description\"	TEXT,"
-        "\"status\"	TEXT CHECK(status IN ('OPEN', 'IN_PROGRESS', 'VERIFICATION', 'CLOSED')),"
+        "\"status\"	TEXT DEFAULT 'OPEN' CHECK(status IN ('OPEN', 'IN_PROGRESS', 'VERIFICATION', 'CLOSED')),"
         "PRIMARY KEY(\"id\" AUTOINCREMENT)"
     ");");
 
@@ -44,11 +44,46 @@ bool DbApi::openDb(QString pathToDb){
 
 bool DbApi::insertTask(const Task &task){
     QSqlQuery query;
-    QString str_insert = "INSERT INTO tasks(name, description, status) "
+    QString queryStr = "INSERT INTO task(name, description, status) "
                 "VALUES ('%1', '%2', '%3');";
-    str_insert = str_insert.arg(task.getTaskName().c_str());
-    str_insert = str_insert.arg(task.getDescription().c_str());
-    str_insert = str_insert.arg(task.getStatus().c_str());
-    query.prepare(str_insert);
+    queryStr = queryStr.arg(task.getTaskName().c_str());
+    //str_insert = str_insert.arg(task.getDescription().c_str());
+    //str_insert = str_insert.arg(task.getStatus().c_str());
+    query.prepare(queryStr);
     return query.exec();
+}
+
+bool DbApi::updateTask(const Task &task){
+    QSqlQuery query;
+    QString queryStr = "UPDATE task SET name='%1', description='%2', status='%3' WHERE id=%4;";
+    queryStr = queryStr.arg(task.getTaskName().c_str());
+    //queryStr = queryStr.arg(task.getDescription().c_str());
+    //queryStr = queryStr.arg(task.getStatus().c_str());
+    queryStr = queryStr.arg(task.getTaskId());
+    query.prepare(queryStr);
+    return query.exec();
+}
+
+void DbApi::deleteTaskById(unsigned int id){
+    QSqlQuery query;
+    QString queryStr = "DELETE FROM task WHERE id=%1;";
+    queryStr = queryStr.arg(id);
+    query.prepare(queryStr);
+}
+
+bool DbApi::insertComment(const Task &task, std::string comment){
+    QSqlQuery query;
+    QString queryStr = "INSERT INTO comment(id_task, comment) "
+                "VALUES (%1, '%2');";
+    queryStr = queryStr.arg(task.getTaskId());
+    queryStr = queryStr.arg(comment.c_str());
+    query.prepare(queryStr);
+    return query.exec();
+}
+
+void DbApi::deleteCommentById(unsigned int id){
+    QSqlQuery query;
+    QString queryStr = "DELETE FROM comment WHERE id=%1;";
+    queryStr = queryStr.arg(id);
+    query.prepare(queryStr);
 }
