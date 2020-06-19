@@ -4,12 +4,12 @@ SingletonTaskHandler* SingletonTaskHandler::pInstance = nullptr;
 
 SingletonTaskHandler::SingletonTaskHandler()
 {
-    vectorTasks = new std::vector<Task>;
+    mapTasks = new std::map<const unsigned int, Task>;
 }
 
 SingletonTaskHandler::~SingletonTaskHandler()
 {
-    delete vectorTasks;
+    delete mapTasks;
 }
 
 SingletonTaskHandler* SingletonTaskHandler::getInstance()
@@ -26,38 +26,45 @@ void SingletonTaskHandler::deleteInstance()
 
 std::vector<Task> SingletonTaskHandler::getTasks() const
 {
-    return std::vector<Task>(*vectorTasks);
+    std::vector<Task> vectorTasks;
+    vectorTasks.resize(mapTasks->size());
+    std::transform(mapTasks->begin(), mapTasks->end(),
+                   vectorTasks.begin(), [] (std::pair<const unsigned int, Task>& pair) -> Task
+    {
+        return pair.second;
+    });
+    return vectorTasks;
 }
 
 bool SingletonTaskHandler::addTask(const Task& task)
 {
-    for(Task& iterTask : *vectorTasks){
-        if(iterTask.getTaskId() == task.getTaskId()){
-            return false;
-        }
-    }
-    vectorTasks->push_back(task);
+    if(mapTasks->find(task.getTaskId()) != mapTasks->end())
+        return false;
+
+    mapTasks->insert(std::pair<const unsigned int, Task>(task.getTaskId(), task));
     return true;
 }
 
 void SingletonTaskHandler::deleteTaskById(unsigned int id)
 {
-    for(auto taskIter = vectorTasks->begin(); taskIter < vectorTasks->end(); taskIter++){
-        if(taskIter->getTaskId() == id){
-            vectorTasks->erase(taskIter);
-            break;
-        }
-    }
+    auto searchResult = mapTasks->find(id);
+    if(searchResult != mapTasks->end())
+        mapTasks->erase(searchResult);
 }
 
 bool SingletonTaskHandler::updateTask(const Task& task)
 {
-    deleteTaskById(task.getTaskId());
+    auto searchResult = mapTasks->find(task.getTaskId());
+    if(searchResult == mapTasks->end())
+        return false;
+    else
+        mapTasks->erase(searchResult);
+
     addTask(task);
-    return false;
+    return true;
 }
 
 void SingletonTaskHandler::clearTasks()
 {
-    vectorTasks->clear();
+    mapTasks->clear();
 }

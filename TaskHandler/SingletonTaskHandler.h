@@ -2,6 +2,8 @@
 #define SINGLETONTASKHANDLER_H
 
 #include "Task.h"
+#include <algorithm>
+#include <map>
 
 /**
  * @brief Provides single access to task list in the program
@@ -61,7 +63,7 @@ public:
 
 private:
     static SingletonTaskHandler* pInstance;
-    std::vector<Task>* vectorTasks;
+    std::map<const unsigned int, Task>* mapTasks;
     SingletonTaskHandler();
     ~SingletonTaskHandler();
 };
