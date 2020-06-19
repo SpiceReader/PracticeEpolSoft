@@ -57,9 +57,8 @@ bool SingletonTaskHandler::updateTask(const Task& task)
     auto searchResult = mapTasks->find(task.getTaskId());
     if(searchResult == mapTasks->end())
         return false;
-    else
-        mapTasks->erase(searchResult);
 
+    mapTasks->erase(searchResult);
     addTask(task);
     return true;
 }
