@@ -21,6 +21,8 @@
 class Task
 {
 public:
+
+    enum Status {OPEN = 1, IN_PROGRESS, VERIFICATION, CLOSED};
     /**
      * @brief Creates empty task
      */
@@ -59,10 +61,24 @@ public:
      */
     std::vector<std::string> getComments();
 
+    /**
+     * @brief Adds description to the current task
+     * @param description to add
+     */
+    void setTaskDescription(const std::string& description);
+
+    const std::string getTaskDescription();
+
+    void setTaskStatus(Status stat);
+
+    Status getTaskStatus();
+
 private:
     unsigned int mTaskId;
     std::string mTaskName;
+    std::string mTaskDescription;
     std::vector<std::string> mComments;
+    Status mTaskStatus;
 };
 
 #endif // TASK_H
