@@ -59,7 +59,7 @@ public:
     /**
      * @return all comments of the current task
      */
-    std::vector<std::string> getComments();
+    const std::vector<std::string> getComments() const;
 
     /**
      * @brief Adds description to the current task
@@ -67,11 +67,11 @@ public:
      */
     void setTaskDescription(const std::string& description);
 
-    const std::string getTaskDescription();
+    const std::string getTaskDescription() const;
 
     void setTaskStatus(Status stat);
 
-    Status getTaskStatus();
+    Status getTaskStatus() const;
 
 private:
     unsigned int mTaskId;

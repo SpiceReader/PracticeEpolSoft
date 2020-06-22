@@ -42,7 +42,7 @@ void Task::setTaskDescription (const std::string &description)
     mTaskDescription = description;
 }
 
-const std::string Task::getTaskDescription ()
+const std::string Task::getTaskDescription () const
 {
     return mTaskDescription;
 }
@@ -52,12 +52,12 @@ void Task::setTaskStatus(Status stat)
     this->mTaskStatus = stat;
 }
 
-Task::Status Task::getTaskStatus()
+Task::Status Task::getTaskStatus() const
 {
     return mTaskStatus;
 }
 
-std::vector<std::string> Task::getComments()
+const std::vector<std::string> Task::getComments() const
 {
     // TODO: implement getComments method
     // Note: Empty vector is here only to disable compilation error, please remove it before implementation
