@@ -3,8 +3,7 @@
 
 #include <TaskHandler/Task.h>
 
-#include <QSqlDatabase>
-#include <QSqlQuery>
+#include <QtSql>
 
 /**
  * @brief Provides single access to database
@@ -13,9 +12,8 @@ class DbApi
 {
     static QSqlDatabase db;
     static bool isOpen;
+    DbApi() = default;
 public:
-    DbApi();
-
     /**
      * @brief Open single connection to database
      * @param pathToDb URI to database
@@ -25,15 +23,21 @@ public:
 
     /**
      * @brief Close connection to database
-     * @return true if database was opened or false otherwise
      */
-    bool static closeDb();
+    void static closeDb();
 
     /**
      * @brief Checking if database was opened or not
      * @return true if database is opened or false otherwise
      */
     bool static isOpened() { return isOpen; };
+
+    /**
+     * @brief Get task from database
+     * @param id Id of getted task
+     * @return task from database
+     */
+    static Task* getTaskById(unsigned int id);
 
     /**
      * @brief Insert task to database
@@ -47,6 +51,11 @@ public:
      * @param id Id of deleted task
      */
     void static deleteTaskById(unsigned int id);
+
+    /**
+     * @brief Delete all tasks from database
+     */
+    void static deleteAllTasks();
 
     /**
      * @brief Update task in database
@@ -68,6 +77,17 @@ public:
      * @param id Id of deleted comment
      */
     void static deleteCommentById(unsigned int id);
+
+    /**
+     * @brief Delete all comments from database
+     */
+    void static deleteAllComments();
+
+    /**
+     * @brief Delete all comments from task from database
+     * @param id_task Id of task where we want to delete all comments
+     */
+    void static deleteAllCommentsInTask(unsigned int id_task);
 };
 
 #endif // DBAPI_H
