@@ -37,20 +37,23 @@ void MainWindow::on_saveButton_clicked()
 
     taskBox->setLayout(taskLayout);
     LabelTaskDescription->setWordWrap(true);
-
     if(ui->radioOpen->isChecked()){
-        ui->openTasksLayout->addWidget(taskBox);
+        ui->openTaskLayout->addWidget(taskBox);
+        task.setTaskStatus(Task::OPEN);
     }
     if(ui->radioProcess->isChecked()){
         ui->proccesTaskLayout->addWidget(taskBox);
+        task.setTaskStatus(Task::IN_PROGRESS);
     }
 
     if(ui->radioClosed->isChecked()){
         ui->closeTaskLayout->addWidget(taskBox);
+        task.setTaskStatus(Task::CLOSED);
     }
 
     if(ui->radioVerification->isChecked()){
         ui->verTaskLayout->addWidget(taskBox);
+        task.setTaskStatus(Task::VERIFICATION);
     }
 
     SingletonTaskHandler::getInstance()->addTask(task);
@@ -63,7 +66,7 @@ void MainWindow::on_clearButton_clicked()
 
     SingletonTaskHandler::getInstance()->clearTasks();
 
-    clearLayout(ui->openTasksLayout, 2);
+    clearLayout(ui->openTaskLayout, 2);
     clearLayout(ui->proccesTaskLayout, 2);
     clearLayout(ui->verTaskLayout, 2);
     clearLayout(ui->closeTaskLayout, 2);
