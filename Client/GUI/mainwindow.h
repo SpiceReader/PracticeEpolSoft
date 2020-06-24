@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "../TaskHandler/SingletonTaskHandler.h"
+#include "../TaskHandler/Task.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -22,5 +24,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    bool isRadiosChecked();
+    void clearLayout(QLayout *layout, int numWidget);
 };
 #endif // MAINWINDOW_H
