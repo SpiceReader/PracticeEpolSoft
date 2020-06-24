@@ -20,16 +20,19 @@ SOURCES += \
     GUI/mainwindow.cpp \
     TaskHandler/SingletonTaskHandler.cpp \
     TaskHandler/Task.cpp \
+    GUI/dialogconnection.cpp \
     main.cpp
 
 HEADERS += \
     Database/dbapi.h \
     GUI/mainwindow.h \
     TaskHandler/SingletonTaskHandler.h \
-    TaskHandler/Task.h \
+    TaskHandler/Task.h \ \
+    GUI/dialogconnection.h
 
 FORMS += \
-    GUI/mainwindow.ui
+    GUI/mainwindow.ui \
+    GUI/dialogconnection.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

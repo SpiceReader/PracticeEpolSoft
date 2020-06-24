@@ -22,6 +22,8 @@ private slots:
 
     void on_clearButton_clicked();
 
+    void on_buttonConnectionServer_clicked();
+
 private:
     Ui::MainWindow *ui;
     bool isRadiosChecked();
