@@ -1,0 +1,7 @@
+{
+	"arguments": {
+		"string_argument": "\\some\\path\\to\\file.txt",
+		"array_argument" : ["string1", "string2"]
+	},
+	"commandCode": 1
+}
