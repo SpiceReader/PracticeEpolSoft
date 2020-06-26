@@ -31,6 +31,12 @@ HEADERS += \
 FORMS += \
     GUI/mainwindow.ui
 
+INCLUDEPATH += ../Network/include/
+LIBS += -L"$$shell_path($$_PRO_FILE_PWD_)/../Network/lib" -lLibNetwork
+
+CONFIG += conan_basic_setup
+include(../Libs/Conan/conanbuildinfo.pri)
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
