@@ -3,6 +3,7 @@
 
 #include "INetworkMessage.h"
 
+// Класс Responce должен иметь геттер и сеттер для обработки ResponseCode
 class Response : public INetworkMessage
 {
 public:

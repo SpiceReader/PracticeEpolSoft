@@ -38,6 +38,26 @@
 // {
 //    // Обработка создания таска
 // }
+//
+// Отправка ответа с сервера на клиент (серверная часть):
+// ------------------------------------------------------
+//
+// CreateTaskSuccessResponseArguments arguments("task_id");
+// Json::Value jsonArguments = arguments.getJsonArguments();
+// Response response(Response::ResponseCode::SUCCESS, jsonArguments)
+// Json::Value jsonMessage = request.getMessage()
+//
+// Получение ответа от сервера на клиенте (клиентская часть):
+//
+// std::string stringWithJson; // Строка с JSON, полученная из сокета
+// Json::Reader reader;
+// Json::Value valueAfterParsing;
+// reader.parse(stringWithJson, valueAfterParsing);
+// Response resp(valueAfterParsing);
+// if (resp.getResponseCode() == Response::ResponseCode::CREATE_FILE)
+// {
+//    // Обработка ответа
+// }
 class INetworkMessage
 {
 public:
