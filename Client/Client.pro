@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     Database/dbapi.cpp \
     GUI/mainwindow.cpp \
+    MessageHandler/MessageHandler.cpp \
     TaskHandler/SingletonTaskHandler.cpp \
     TaskHandler/Task.cpp \
     main.cpp
@@ -25,6 +26,8 @@ SOURCES += \
 HEADERS += \
     Database/dbapi.h \
     GUI/mainwindow.h \
+    MessageHandler/IMessageObserver.h \
+    MessageHandler/MessageHandler.h \
     TaskHandler/SingletonTaskHandler.h \
     TaskHandler/Task.h \
 
