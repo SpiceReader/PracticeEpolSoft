@@ -5,15 +5,33 @@
 #include <json/json.h>
 #include <fstream>
 #include <iostream>
+#include <cstdlib>
+#include <filesystem>
+#include <Windows.h>
 
 int main(int argc, char *argv[])
 {
-    std::ifstream json_file("jsonExample.txt");
-    Json::Value jsonValue;
-    json_file >> jsonValue;
-    json_file.close();
+    if(argc > 0)
+    {
+        // Get path to directory where is the executable file
+        std::string urlK = argv[0];
 
-    std::cout << jsonValue["arguments"] << std::endl;
+        urlK.erase(urlK.find_last_of('\\'));
+
+        SetCurrentDirectoryA(urlK.c_str());
+    }
+
+
+    std::ifstream file;
+    file.open("jsonExample.txt");
+    if(file.is_open())
+    {
+        Json::Value jsonValue;
+        file >> jsonValue;
+        file.close();
+
+        std::cout << jsonValue << std::endl;
+    }
 
     /*QApplication a(argc, argv);
     MainWindow w;
