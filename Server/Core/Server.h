@@ -2,7 +2,10 @@
 #define SERVER_H
 #include <QTcpServer>
 #include <QTcpSocket>
-#include "ThreadPool.h"
+#include <QAbstractSocket>
+#include <QMessageBox>
+#include <Core/ThreadPool.h>
+
 
 /**
  * Multithread server
@@ -15,13 +18,13 @@
 // - Client connects to server IP and port
 // - Client sends some string to server, server adds some prefix to this string and sends it back (some kind of echo server)
 // - Server closes the connection
-class Server : public QTcpServer
+class Server : public QTcpServer, public ThreadPool
 {
     Q_OBJECT
 
 public:
     Server(unsigned int port);
-    void messageToClient(QTcpSocket *socket, const std::string& prefix);
+    void messageToClient(QTcpSocket *socket, const QString& clientString);
 
 private slots:
     void clientConnection();
@@ -29,6 +32,7 @@ private slots:
 
 private:
     QTcpServer *tcpserver;
+    ThreadPool *thread;
 };
 
 #endif // SERVER_H
