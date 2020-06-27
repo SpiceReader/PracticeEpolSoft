@@ -1,0 +1,159 @@
+Command_code:
+0 - LIST_OF_TASKS
+1 - CREATE_TASK
+2 - UPDATE_TASK
+3 - DELETE_TASK
+
+Command 0: LIST_OF_TASKS
+
+{
+	"command_code" : 0,
+	"arguments" : {}
+}
+
+Possible responses:
+###################
+
+SUCCESS:
+{
+	response_code: 0,
+	arguments :
+	{
+		"task_list" :
+		[
+				{
+					"task_id" : 1,
+					"task_name" : "First task",
+					"task_description" : "Some info",
+					"status" : 0
+				},
+				{
+					"task_id" : 25,
+					"task_name" : "First task",
+					"task_description" : "Some info",
+					"status" : 0
+				}
+		]
+	}
+}
+
+SUCCESS (no tasks):
+{
+	response_code: 0,
+	arguments :
+	{
+		"task_list" : []
+	}
+}
+
+Command 1: CREATE_TASK
+----------------------
+{
+	"command_code" : 1,
+	"arguments" : 
+	{
+		"task_name" : "First task",
+		"task_description" : "Some info",
+		"status" : 0
+	}
+}
+
+enum Status {OPEN = 1, IN_PROGRESS = 2, VERIFICATION = 3, CLOSED = 4};
+
+Possible responses:
+###################
+
+SUCCESS
+{
+	"response_code": 0,
+	"arguments" :
+	{
+		"task_id" : 12
+	}
+}
+
+INCORRECT_DATA
+{
+	"response_code": 2,
+	"arguments" :
+	{
+		"failed_fields" : [ "task_name", "status" ]
+	}
+}
+
+Command 2: UPDATE_TASK
+----------------------
+{
+	"command_code" : 2,
+	"arguments" : 
+	{
+		"task_id" : 25
+		"task_name" : "First task",
+		"task_description" : "Some info",
+		"status" : 0
+	}
+}
+
+Possible responses:
+###################
+
+SUCCESS
+{
+	"response_code": 0,
+	"arguments" :
+	{
+		"task_id" : 12
+	}
+}
+
+TASK_ID_NOT_EXIST
+{
+	"response_code": 1,
+	"arguments" : {}
+}
+
+INCORRECT_DATA
+{
+	"response_code": 2,
+	"arguments" :
+	{
+		"failed_fields" : [ "task_name", "status" ]
+	}
+}
+
+Command 3: DELETE_TASK
+----------------------
+{
+	"command_code" : 3,
+	"arguments" : 
+	{
+		"task_id" : 25
+	}
+}
+
+Possible responses:
+###################
+
+SUCCESS
+{
+	"response_code": 0,
+	"arguments" : {}
+}
+
+TASK_ID_NOT_EXIST
+{
+	"response_code": 1,
+	"arguments" : {}
+}
+
+----------------------------------------------
+
+{
+	response_code: 0,
+	arguments : {}
+}
+
+Response_code:
+0 - SUCCESS
+1 - TASK_ID_NOT_EXIST
+2 - INCORRECT_DATA

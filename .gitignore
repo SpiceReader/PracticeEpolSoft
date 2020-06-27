@@ -36,6 +36,7 @@ Thumbs.db
 /.qmake.stash
 
 # qtcreator generated files
+*.pro.user
 *.pro.user*
 
 # xemacs temporary files
@@ -71,3 +72,12 @@ Thumbs.db
 *.dll
 *.exe
 
+# Conan directory
+Libs/Conan/
+Libs/Conan/*
+!Libs/Conan/conanfile.txt
+!Libs/Conan/vs_debug_x86_64
+
+# Network library
+Network/lib/*
+!Network/lib/.gitkeep

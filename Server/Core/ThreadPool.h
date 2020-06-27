@@ -3,6 +3,7 @@
 
 // std
 #include <functional>
+#include <condition_variable>
 #include <mutex>
 #include <queue>
 #include <thread>
@@ -19,6 +20,8 @@ public:
      * @param numOfThreads Numbr of threads in thread pool
      */
     ThreadPool(unsigned int numOfThreads = 100);
+
+    ~ThreadPool();
 
     /**
      * Adds task to queue
@@ -57,7 +60,7 @@ private:
     /**
      * Used to terminate threads when application is terminated
      */
-    bool mTerminate;
+    bool mTerminate = false;
 };
 
 #endif // SERVER_H

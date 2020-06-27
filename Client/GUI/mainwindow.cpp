@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "dialogconnection.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -93,4 +94,9 @@ bool MainWindow::isRadiosChecked(){
             ui->radioProcess->isChecked());
 }
 
-
+void MainWindow::on_buttonConnectionServer_clicked()
+{
+    DialogConnection dialog;
+    dialog.setModal(true);
+    dialog.exec();
+}

@@ -1,19 +1,40 @@
 #include "ThreadPool.h"
 
-ThreadPool::ThreadPool(unsigned int /* port */)
+ThreadPool::ThreadPool(unsigned int numOfThreads)
 {
     // General concept:
     //
     // 1) Thread pool with 100 threads by default is used to process tasks
     // 2) New task is put to processing queue with @addTask method
     // 3) First available thread starts task processing
-
+    for (size_t i = 0; i < numOfThreads; i++) {
+        workers.emplace_back([=] {threadProcessor();});
+    }
 }
 
-void ThreadPool::addTask(std::function<void ()> /* task */)
+ThreadPool::~ThreadPool()
+{
+    {
+        std::unique_lock<std::mutex> lock{mutexForWorkers};
+        mTerminate = true;
+    }
+
+    conditionForWorkers.notify_all();
+
+    for(std::thread& thread : workers)
+        thread.join();
+}
+
+void ThreadPool::addTask(std::function<void ()> task)
 {
     // mutex with std::unique_lock should be used when access to queue of tasks is performed
     // conditionVariable.notify_one() should be used to notify any of threads when task is added
+    {
+        std::unique_lock<std::mutex> lock{mutexForWorkers};
+        tasks.emplace(std::move(task));
+    }
+
+    conditionForWorkers.notify_one();
 }
 
 void ThreadPool::threadProcessor()
@@ -30,5 +51,18 @@ void ThreadPool::threadProcessor()
     while (true)
     {
         // Do something to execute function from queue
+        {
+            std::unique_lock<std::mutex> lock{mutexForWorkers};
+
+            conditionForWorkers.wait(lock, [=] {return mTerminate || !tasks.empty();});
+
+            if(mTerminate && tasks.empty()){
+                break;
+            }
+            executor = std::move(tasks.front());
+            tasks.pop();
+        }
+
+        executor();
     }
 }
