@@ -21,6 +21,7 @@ SOURCES += \
     MessageHandler/MessageHandler.cpp \
     TaskHandler/SingletonTaskHandler.cpp \
     TaskHandler/Task.cpp \
+    GUI/dialogconnection.cpp \
     main.cpp
 
 HEADERS += \
@@ -29,10 +30,12 @@ HEADERS += \
     MessageHandler/IMessageObserver.h \
     MessageHandler/MessageHandler.h \
     TaskHandler/SingletonTaskHandler.h \
-    TaskHandler/Task.h \
+    TaskHandler/Task.h \ \
+    GUI/dialogconnection.h
 
 FORMS += \
-    GUI/mainwindow.ui
+    GUI/mainwindow.ui \
+    GUI/dialogconnection.ui
 
 INCLUDEPATH += ../Network/include/
 LIBS += -L"$$shell_path($$_PRO_FILE_PWD_)/../Network/lib" -lLibNetwork
