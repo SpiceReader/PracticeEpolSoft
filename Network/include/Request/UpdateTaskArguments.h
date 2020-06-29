@@ -26,7 +26,7 @@ public:
 
     /**
      * @brief Convert all arguments to json object
-     * @return Json object with fields, needed to create task
+     * @return Json object with fields, needed to update task
      */
     Json::Value getJsonArguments();
 
