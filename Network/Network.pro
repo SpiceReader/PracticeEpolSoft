@@ -15,10 +15,12 @@ HEADERS += \
     include/INetworkMessage.h \
     include/Request/Request.h \
     include/Request/CreateTaskArguments.h \
+    include/Request/UpdateTaskArguments.h \
     include/Response/Response.h\
     include/Task/Task.h
 
 SOURCES += \
+    source/Request/UpdateTaskArguments.cpp \
     source/Request/CreateTaskArguments.cpp \
     source/INetworkMessage.cpp \
     source/Request/CreateTaskArguments.cpp \
