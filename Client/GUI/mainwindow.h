@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include "../TaskHandler/SingletonTaskHandler.h"
-#include "../TaskHandler/Task.h"
+#include "Task/Task.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

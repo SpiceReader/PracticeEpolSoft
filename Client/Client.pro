@@ -20,7 +20,6 @@ SOURCES += \
     GUI/mainwindow.cpp \
     MessageHandler/MessageHandler.cpp \
     TaskHandler/SingletonTaskHandler.cpp \
-    TaskHandler/Task.cpp \
     GUI/dialogconnection.cpp \
     main.cpp
 
@@ -30,7 +29,6 @@ HEADERS += \
     MessageHandler/IMessageObserver.h \
     MessageHandler/MessageHandler.h \
     TaskHandler/SingletonTaskHandler.h \
-    TaskHandler/Task.h \ \
     GUI/dialogconnection.h
 
 FORMS += \

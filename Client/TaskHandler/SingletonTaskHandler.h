@@ -1,7 +1,7 @@
 #ifndef SINGLETONTASKHANDLER_H
 #define SINGLETONTASKHANDLER_H
 
-#include "Task.h"
+#include "Task/Task.h"
 #include <algorithm>
 #include <map>
 
