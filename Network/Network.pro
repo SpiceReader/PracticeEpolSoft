@@ -14,10 +14,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 HEADERS += \
     include/INetworkMessage.h \
     include/Request/Request.h \
+    include/Request/createtaskarguments.h \
     include/Response/Response.h\
     include/Task/Task.h
 
 SOURCES += \
+    include/Request/createtaskarguments.cpp \
     source/INetworkMessage.cpp \
     source/Request/Request.cpp \
     source/Response/Response.cpp\
