@@ -68,7 +68,7 @@ public:
      *
      * @param message Json::Value message
      */
-    //INetworkMessage(Json::Value message);
+    INetworkMessage(Json::Value message);
 
     /**
      * Constructs network message from string with JSON
@@ -76,14 +76,14 @@ public:
      * @param message string with JSON message
      */
     // Дополнительный конструктор, реализовать если требуется
-    //INetworkMessage(std::string message);
+    INetworkMessage(std::string message);
 
     /**
      * Used to obtain JSON message
      *
      * @return Json::Value message
      */
-    //Json::Value getMessage();
+    Json::Value getMessage(){return this->mJsonMessage;};
 
 private:
     /**
