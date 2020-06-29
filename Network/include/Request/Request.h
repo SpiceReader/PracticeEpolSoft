@@ -15,7 +15,10 @@ public:
      */
     enum CommandCode
     {
-        LIST_OF_TASKS = 0
+        LIST_OF_TASKS = 0,
+        CREATE_TASK = 1,
+        UPDATE_TASK = 2,
+        DELETE_TASK = 3,
     };
 
     /**
@@ -23,14 +26,14 @@ public:
      * @param message Json::Value message
      */
     // В конструкторе нужно распарсить command_code, а message передать конструктору базы (INetworkMessage)
-    // Request(Json::Value message);
+    Request(Json::Value message);
 
     /**
      * Creates request from string with JSON message
      * @param message string with JSON message
      */
     // Дополнительный конструктор, реализовать если требуется
-    // Request(std::string message);
+    Request(std::string message);
 
     /**
      * Creates request with provided command code and arguments
@@ -38,7 +41,13 @@ public:
      * @param code command code
      * @param arguments Json::Value arguments
      */
-    //Request(CommandCode code, Json::Value arguments);
+    Request(CommandCode code, Json::Value arguments);
+
+    /**
+     * Return command code from object Request
+     * @return commandCode from request
+     */
+    CommandCode getCommandCode();
 };
 
 #endif // REQUEST_H
