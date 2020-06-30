@@ -7,6 +7,7 @@ CreateTaskArguments::CreateTaskArguments(std::string taskName, std::string taskD
     mTaskDescription(taskDescription),
     mTaskStatus(status)
 {
+    mValid = (!mTaskName.size() || !(mTaskStatus >= 1 && mTaskStatus <= 4)) ? false : true;
     std::cout << "Arguments for creation of task was created" << std::endl;
 }
 
@@ -15,14 +16,36 @@ CreateTaskArguments::CreateTaskArguments(Task& task):
     mTaskDescription(task.getTaskDescription()),
     mTaskStatus(task.getTaskStatus())
 {
+    mValid = (!mTaskName.size() || !(mTaskStatus >= 1 && mTaskStatus <= 4)) ? false : true;
     std::cout << "Arguments for creation of task was created" << std::endl;
 }
 
-CreateTaskArguments::CreateTaskArguments(Json::Value& jsonValue):
-    mTaskName(jsonValue["task_name"].asString()),
-    mTaskDescription(jsonValue["task_description"].asString()),
-    mTaskStatus(static_cast<Task::Status>(jsonValue["status"].asInt()))
+CreateTaskArguments::CreateTaskArguments(Json::Value& jsonValue)
 {
+    if(!jsonValue["task_name"].isNull() && jsonValue["task_name"].isString())
+        mTaskName = jsonValue["task_name"].asString();
+    else{
+        mTaskName = "";
+        mValid = false;
+    }
+
+    if(!jsonValue["task_description"].isNull() && jsonValue["task_description"].isString())
+        mTaskDescription = jsonValue["task_description"].asString();
+    else{
+        mTaskDescription = "";
+        mValid = false;
+    }
+
+    if(!jsonValue["status"].isNull() && jsonValue["status"].isInt())
+        mTaskStatus = static_cast<Task::Status>(jsonValue["status"].asInt());
+    else{
+        mTaskStatus = static_cast<Task::Status>(0);
+        mValid = false;
+    }
+
+    if(!mTaskName.size() || !(mTaskStatus >= 1 && mTaskStatus <= 4))
+        mValid = false;
+
     std::cout << "Arguments for creation of task was created" << std::endl;
 }
 
@@ -30,9 +53,37 @@ CreateTaskArguments::CreateTaskArguments(Request& request)
 {
     Json::Value argumentsList {request.getArguments()};
 
-    mTaskName = argumentsList["task_name"].asString();
-    mTaskDescription = argumentsList["task_description"].asString();
-    mTaskStatus = static_cast<Task::Status>(argumentsList["status"].asInt());
+    if(argumentsList.isNull()){
+        mTaskName = "";
+        mTaskDescription = "";
+        mTaskStatus = static_cast<Task::Status>(0);
+        mValid = false;
+        return;
+    }
+
+    if(!argumentsList["task_name"].isNull() && argumentsList["task_name"].isString())
+        mTaskName = argumentsList["task_name"].asString();
+    else{
+        mTaskName = "";
+        mValid = false;
+    }
+
+    if(!argumentsList["task_description"].isNull() && argumentsList["task_description"].isString())
+        mTaskDescription = argumentsList["task_description"].asString();
+    else{
+        mTaskDescription = "";
+        mValid = false;
+    }
+
+    if(!argumentsList["status"].isNull() && argumentsList["status"].isInt())
+        mTaskStatus = static_cast<Task::Status>(argumentsList["status"].asInt());
+    else{
+        mTaskStatus = static_cast<Task::Status>(0);
+        mValid = false;
+    }
+
+    if(!mTaskName.size() || !(mTaskStatus >= 1 && mTaskStatus <= 4))
+        mValid = false;
 
     std::cout << "Arguments for creation of task was created" << std::endl;
 }

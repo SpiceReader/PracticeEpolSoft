@@ -41,7 +41,14 @@ public:
      */
     Json::Value getJsonArguments();
 
+    /**
+     * @brief Check if json arguments valid
+     * @return true if json is valid, false otherwise
+     */
+    bool isValid() {return mValid;};
+
 private:
+    bool mValid = true;
     std::string mTaskName;
     std::string mTaskDescription;
     Task::Status mTaskStatus;
