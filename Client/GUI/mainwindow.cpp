@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "dialogconnection.h"
+#include "../MessageHandler/CreateFileAction.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -56,6 +57,14 @@ void MainWindow::on_saveButton_clicked()
         ui->verTaskLayout->addWidget(taskBox);
         task.setTaskStatus(Task::VERIFICATION);
     }
+
+    CreateFileAction action(task);
+    action.setCallback([&](const Response& resp)
+    {
+
+    });
+
+    action.executeAction();
 
     SingletonTaskHandler::getInstance()->addTask(task);
 }
