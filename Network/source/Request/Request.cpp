@@ -30,3 +30,8 @@ Request::CommandCode Request::getCommandCode()
 {
     return static_cast<Request::CommandCode>(this->getMessage()["command_code"].asInt());
 }
+
+Json::Value Request::getArguments()
+{
+    return getMessage()["arguments"];
+}

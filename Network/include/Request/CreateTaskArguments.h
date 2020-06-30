@@ -4,6 +4,7 @@
 #include <string>
 #include <Task/Task.h>
 #include <json/json.h>
+#include "Request.h"
 
 class CreateTaskArguments
 {
@@ -21,6 +22,18 @@ public:
      * @param task Object of Task class
      */
     CreateTaskArguments(Task& task);
+
+    /**
+     * @brief Creates arguments from JSON
+     * @param jsonValue Object of JSON with fields to create Task
+     */
+    CreateTaskArguments(Json::Value& jsonValue);
+
+    /**
+     * @brief Creates arguments from Request
+     * @param request JSON object with fields CommandCode and Arguments
+     */
+    CreateTaskArguments(Request& request);
 
     /**
      * @brief Convert all arguments to json object

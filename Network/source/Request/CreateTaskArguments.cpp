@@ -15,7 +15,26 @@ CreateTaskArguments::CreateTaskArguments(Task& task):
     mTaskDescription(task.getTaskDescription()),
     mTaskStatus(task.getTaskStatus())
 {
+    std::cout << "Arguments for creation of task was created" << std::endl;
+}
 
+CreateTaskArguments::CreateTaskArguments(Json::Value& jsonValue):
+    mTaskName(jsonValue["task_name"].asString()),
+    mTaskDescription(jsonValue["task_description"].asString()),
+    mTaskStatus(static_cast<Task::Status>(jsonValue["status"].asInt()))
+{
+    std::cout << "Arguments for creation of task was created" << std::endl;
+}
+
+CreateTaskArguments::CreateTaskArguments(Request& request)
+{
+    Json::Value argumentsList {request.getArguments()};
+
+    mTaskName = argumentsList["task_name"].asString();
+    mTaskDescription = argumentsList["task_description"].asString();
+    mTaskStatus = static_cast<Task::Status>(argumentsList["status"].asInt());
+
+    std::cout << "Arguments for creation of task was created" << std::endl;
 }
 
 Json::Value CreateTaskArguments::getJsonArguments()

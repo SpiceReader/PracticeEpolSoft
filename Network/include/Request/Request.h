@@ -48,6 +48,12 @@ public:
      * @return commandCode from request
      */
     CommandCode getCommandCode();
+
+    /**
+     * Return field 'arguments' from Request
+     * @return arguments
+     */
+    Json::Value getArguments();
 };
 
 #endif // REQUEST_H
