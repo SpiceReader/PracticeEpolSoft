@@ -49,7 +49,7 @@ UpdateTaskArguments::UpdateTaskArguments(Json::Value &jsonValue)
     if(!jsonValue["status"].isNull() && jsonValue["status"].isInt())
         mTaskStatus = static_cast<Task::Status>(jsonValue["status"].asInt());
     else{
-        mTaskStatus = static_cast<Task::Status>(0);
+        mTaskStatus = Task::OPEN;
         mValid = false;
     }
 
@@ -67,7 +67,7 @@ UpdateTaskArguments::UpdateTaskArguments(Request &request)
         mTaskId = 0;
         mTaskName = "";
         mTaskDescription = "";
-        mTaskStatus = static_cast<Task::Status>(0);
+        mTaskStatus = Task::OPEN;
         mValid = false;
         return;
     }
@@ -96,7 +96,7 @@ UpdateTaskArguments::UpdateTaskArguments(Request &request)
     if(!argumentsList["status"].isNull() && argumentsList["status"].isInt())
         mTaskStatus = static_cast<Task::Status>(argumentsList["status"].asInt());
     else{
-        mTaskStatus = static_cast<Task::Status>(0);
+        mTaskStatus = Task::OPEN;
         mValid = false;
     }
 
