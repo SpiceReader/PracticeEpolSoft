@@ -2,6 +2,10 @@
 
 bool DbApi::isOpen = false;
 QSqlDatabase DbApi::db = QSqlDatabase::addDatabase("QSQLITE");
+std::map<int, std::string> DbApi::Status {{1, "OPEN"},
+                                          {2, "IN_PROGRESS"},
+                                          {3, "VERIFICATION"},
+                                          {4, "CLOSED"}};
 
 bool DbApi::openDb(QString pathToDb){
     if(isOpen)
@@ -46,9 +50,11 @@ void DbApi::closeDb(){
 Task* DbApi::getTaskById(unsigned int id){
     if(!isOpened())
         return nullptr;
+
     QSqlQuery query(nullptr, db);
     QString queryStr = "SELECT * FROM task WHERE id=%1;";
     Task *gettedTask = new Task();
+
     queryStr = queryStr.arg(id);
     query.exec(queryStr);
     QSqlRecord rec = query.record();
@@ -56,34 +62,77 @@ Task* DbApi::getTaskById(unsigned int id){
     while(query.next()){
         gettedTask->setTaskId(query.value(rec.indexOf("id")).toUInt());
         gettedTask->setTaskName(query.value(rec.indexOf("name")).toString().toStdString());
-        //gettedTask->setDescription(query.value(rec.indexOf("description")).toString().toStdString());
+        gettedTask->setTaskDescription(query.value(rec.indexOf("description")).toString().toStdString());
+
+        std::string taskStatus = query.value(rec.indexOf("status")).toString().toStdString();
+        for(auto it = DbApi::Status.begin(); it != DbApi::Status.end(); it++)
+            if(it->second == taskStatus){
+                gettedTask->setTaskStatus(static_cast<Task::Status>(it->first));
+                break;
+            }
     }
 
     return gettedTask;
 }
 
+std::vector<Task> DbApi::getAllTasks()
+{
+    std::vector<Task> vectorOfTasks;
+    if(!isOpened())
+        return vectorOfTasks;
+
+    QSqlQuery query;
+    QString queryStr = "SELECT * FROM task;";
+
+    query.exec(queryStr);
+    Task* gettedTask = new Task();
+    QSqlRecord rec = query.record();
+
+    while(query.next()){
+        gettedTask->setTaskId(query.value(rec.indexOf("id")).toUInt());
+        gettedTask->setTaskName(query.value(rec.indexOf("name")).toString().toStdString());
+        gettedTask->setTaskDescription(query.value(rec.indexOf("description")).toString().toStdString());
+
+        std::string taskStatus = query.value(rec.indexOf("status")).toString().toStdString();
+        for(auto it = DbApi::Status.begin(); it != DbApi::Status.end(); it++)
+            if(it->second == taskStatus){
+                gettedTask->setTaskStatus(static_cast<Task::Status>(it->first));
+                break;
+            }
+        vectorOfTasks.push_back(*gettedTask);
+    }
+
+    return vectorOfTasks;
+}
+
 bool DbApi::insertTask(const Task &task){
     if(!isOpened())
         return false;
+
     QSqlQuery query;
     QString queryStr = "INSERT INTO task(name, description, status) "
                 "VALUES ('%1', '%2', '%3');";
+
     queryStr = queryStr.arg(task.getTaskName().c_str());
-    //str_insert = str_insert.arg(task.getDescription().c_str());
-    //str_insert = str_insert.arg(task.getStatus().c_str());
+    queryStr = queryStr.arg(task.getTaskDescription().c_str());
+    queryStr = queryStr.arg(DbApi::Status[task.getTaskStatus()].c_str());
+
     query.prepare(queryStr);
     return query.exec();
 }
 
-bool DbApi::updateTask(const Task &task){
+bool DbApi::updateTask(unsigned int id, const Task &task){
     if(!isOpened())
         return false;
+
     QSqlQuery query;
     QString queryStr = "UPDATE task SET name='%1', description='%2', status='%3' WHERE id=%4;";
+
     queryStr = queryStr.arg(task.getTaskName().c_str());
-    //queryStr = queryStr.arg(task.getDescription().c_str());
-    //queryStr = queryStr.arg(task.getStatus().c_str());
-    queryStr = queryStr.arg(task.getTaskId());
+    queryStr = queryStr.arg(task.getTaskDescription().c_str());
+    queryStr = queryStr.arg(DbApi::Status[task.getTaskStatus()].c_str());
+    queryStr = queryStr.arg(id);
+
     query.prepare(queryStr);
     return query.exec();
 }
@@ -91,9 +140,12 @@ bool DbApi::updateTask(const Task &task){
 void DbApi::deleteTaskById(unsigned int id){
     if(!isOpened())
         return;
+
     QSqlQuery query;
     QString queryStr = "DELETE FROM task WHERE id=%1;";
+
     queryStr = queryStr.arg(id);
+
     query.prepare(queryStr);
     query.exec();
 }
@@ -101,8 +153,10 @@ void DbApi::deleteTaskById(unsigned int id){
 void DbApi::deleteAllTasks(){
     if(!isOpened())
         return;
+
     QSqlQuery query;
     QString queryStr = "DELETE FROM task;";
+
     query.prepare(queryStr);
     query.exec();
 }
@@ -110,11 +164,14 @@ void DbApi::deleteAllTasks(){
 bool DbApi::insertComment(const Task &task, std::string comment){
     if(!isOpened())
         return false;
+
     QSqlQuery query;
     QString queryStr = "INSERT INTO comment(id_task, comment) "
                 "VALUES (%1, '%2');";
+
     queryStr = queryStr.arg(task.getTaskId());
     queryStr = queryStr.arg(comment.c_str());
+
     query.prepare(queryStr);
     return query.exec();
 }
@@ -122,9 +179,12 @@ bool DbApi::insertComment(const Task &task, std::string comment){
 void DbApi::deleteCommentById(unsigned int id){
     if(!isOpened())
         return;
+
     QSqlQuery query;
     QString queryStr = "DELETE FROM comment WHERE id=%1;";
+
     queryStr = queryStr.arg(id);
+
     query.prepare(queryStr);
     query.exec();
 }
@@ -132,8 +192,10 @@ void DbApi::deleteCommentById(unsigned int id){
 void DbApi::deleteAllComments(){
     if(!isOpened())
         return;
+
     QSqlQuery query;
     QString queryStr = "DELETE FROM comment;";
+
     query.prepare(queryStr);
     query.exec();
 }
@@ -141,9 +203,12 @@ void DbApi::deleteAllComments(){
 void DbApi::deleteAllCommentsInTask(unsigned int id_task){
     if(!isOpened())
         return;
+
     QSqlQuery query;
     QString queryStr = "DELETE FROM comment WHERE id_task=%1;";
+
     queryStr = queryStr.arg(id_task);
+
     query.prepare(queryStr);
     query.exec();
 }

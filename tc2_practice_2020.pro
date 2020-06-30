@@ -9,3 +9,4 @@ SUBDIRS += \
 CONFIG += ordered
 
 Client.depends = Network
+Server.depends = Network
