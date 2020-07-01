@@ -14,7 +14,8 @@ class DbApi
     static QSqlDatabase db;
     static bool isOpen;
     DbApi() = default;
-    static std::map<int, std::string> Status;
+    static std::map<Task::Status, std::string> enumStatusToStringStatus;
+    static std::map<std::string, Task::Status> stringStatusToEnumStatus;
 public:
     /**
      * @brief Open single connection to database
@@ -67,11 +68,10 @@ public:
 
     /**
      * @brief Update task in database
-     * @param id Id of Updated task
      * @param task Updated task
      * @return true if task was updated or false otherwise
      */
-    bool static updateTask(unsigned int id, const Task& task);
+    bool static updateTask(const Task& task);
 
     /**
      * @brief Insert comment to database

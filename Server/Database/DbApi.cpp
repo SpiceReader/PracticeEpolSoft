@@ -1,11 +1,17 @@
-#include "dbapi.h"
+#include "DbApi.h"
 
 bool DbApi::isOpen = false;
 QSqlDatabase DbApi::db = QSqlDatabase::addDatabase("QSQLITE");
-std::map<int, std::string> DbApi::Status {{1, "OPEN"},
-                                          {2, "IN_PROGRESS"},
-                                          {3, "VERIFICATION"},
-                                          {4, "CLOSED"}};
+std::map<Task::Status, std::string> DbApi::enumStatusToStringStatus {{Task::OPEN, "OPEN"},
+                                                                     {Task::IN_PROGRESS, "IN_PROGRESS"},
+                                                                     {Task::VERIFICATION, "VERIFICATION"},
+                                                                     {Task::CLOSED, "CLOSED"}};
+
+std::map<std::string, Task::Status> DbApi::stringStatusToEnumStatus {{"OPEN", Task::OPEN},
+                                                                     {"IN_PROGRESS", Task::IN_PROGRESS},
+                                                                     {"VERIFICATION", Task::VERIFICATION},
+                                                                     {"CLOSED", Task::CLOSED}};
+
 
 bool DbApi::openDb(QString pathToDb){
     if(isOpen)
@@ -65,11 +71,7 @@ Task* DbApi::getTaskById(unsigned int id){
         gettedTask->setTaskDescription(query.value(rec.indexOf("description")).toString().toStdString());
 
         std::string taskStatus = query.value(rec.indexOf("status")).toString().toStdString();
-        for(auto it = DbApi::Status.begin(); it != DbApi::Status.end(); it++)
-            if(it->second == taskStatus){
-                gettedTask->setTaskStatus(static_cast<Task::Status>(it->first));
-                break;
-            }
+        gettedTask->setTaskId(stringStatusToEnumStatus[taskStatus]);
     }
 
     return gettedTask;
@@ -85,21 +87,18 @@ std::vector<Task> DbApi::getAllTasks()
     QString queryStr = "SELECT * FROM task;";
 
     query.exec(queryStr);
-    Task* gettedTask = new Task();
+    Task gettedTask;
     QSqlRecord rec = query.record();
 
     while(query.next()){
-        gettedTask->setTaskId(query.value(rec.indexOf("id")).toUInt());
-        gettedTask->setTaskName(query.value(rec.indexOf("name")).toString().toStdString());
-        gettedTask->setTaskDescription(query.value(rec.indexOf("description")).toString().toStdString());
+        gettedTask.setTaskId(query.value(rec.indexOf("id")).toUInt());
+        gettedTask.setTaskName(query.value(rec.indexOf("name")).toString().toStdString());
+        gettedTask.setTaskDescription(query.value(rec.indexOf("description")).toString().toStdString());
 
         std::string taskStatus = query.value(rec.indexOf("status")).toString().toStdString();
-        for(auto it = DbApi::Status.begin(); it != DbApi::Status.end(); it++)
-            if(it->second == taskStatus){
-                gettedTask->setTaskStatus(static_cast<Task::Status>(it->first));
-                break;
-            }
-        vectorOfTasks.push_back(*gettedTask);
+        gettedTask.setTaskStatus(stringStatusToEnumStatus[taskStatus]);
+
+        vectorOfTasks.push_back(gettedTask);
     }
 
     return vectorOfTasks;
@@ -115,13 +114,13 @@ bool DbApi::insertTask(const Task &task){
 
     queryStr = queryStr.arg(task.getTaskName().c_str());
     queryStr = queryStr.arg(task.getTaskDescription().c_str());
-    queryStr = queryStr.arg(DbApi::Status[task.getTaskStatus()].c_str());
+    queryStr = queryStr.arg(DbApi::enumStatusToStringStatus[task.getTaskStatus()].c_str());
 
     query.prepare(queryStr);
     return query.exec();
 }
 
-bool DbApi::updateTask(unsigned int id, const Task &task){
+bool DbApi::updateTask(const Task &task){
     if(!isOpened())
         return false;
 
@@ -130,8 +129,8 @@ bool DbApi::updateTask(unsigned int id, const Task &task){
 
     queryStr = queryStr.arg(task.getTaskName().c_str());
     queryStr = queryStr.arg(task.getTaskDescription().c_str());
-    queryStr = queryStr.arg(DbApi::Status[task.getTaskStatus()].c_str());
-    queryStr = queryStr.arg(id);
+    queryStr = queryStr.arg(DbApi::enumStatusToStringStatus[task.getTaskStatus()].c_str());
+    queryStr = queryStr.arg(task.getTaskId());
 
     query.prepare(queryStr);
     return query.exec();
