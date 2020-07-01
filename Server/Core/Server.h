@@ -1,5 +1,9 @@
 #ifndef SERVER_H
 #define SERVER_H
+#include <QTcpServer>
+#include <QTcpSocket>
+#include <QAbstractSocket>
+#include <QMessageBox>
 
 /**
  * Multithread server
@@ -12,10 +16,22 @@
 // - Client connects to server IP and port
 // - Client sends some string to server, server adds some prefix to this string and sends it back (some kind of echo server)
 // - Server closes the connection
-class Server
+class Server : public QTcpServer
 {
+    Q_OBJECT
+
 public:
     Server(unsigned int port);
+    void messageToClient(QTcpSocket *socket, const std::string& clientString);
+
+private slots:
+    void clientDisconnect();
+    void clientConnection();
+    void getMessage();
+
+
+private:
+    QTcpServer *tcpserver;
 };
 
 #endif // SERVER_H

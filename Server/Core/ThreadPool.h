@@ -1,5 +1,5 @@
-#ifndef SERVER_H
-#define SERVER_H
+#ifndef THREADPOOL_H
+#define THREADPOOL_H
 
 // std
 #include <functional>
@@ -30,7 +30,6 @@ public:
     void addTask(std::function<void()> task);
 
 private:
-
     /**
      * Used by each thread in thread pool to extract task from queue and process it
      */

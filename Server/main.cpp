@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "Core/Server.h"
 
 #include <string>
 #include <QApplication>
