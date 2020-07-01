@@ -4,8 +4,6 @@
 #include <QTcpSocket>
 #include <QAbstractSocket>
 #include <QMessageBox>
-#include <Core/ThreadPool.h>
-
 
 /**
  * Multithread server
@@ -34,7 +32,6 @@ private slots:
 
 private:
     QTcpServer *tcpserver;
-    QTcpSocket *clientsocket;
 };
 
 #endif // SERVER_H

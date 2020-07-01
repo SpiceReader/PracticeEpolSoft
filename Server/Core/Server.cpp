@@ -35,28 +35,20 @@ void Server::getMessage()
     qDebug("Reading data!!");
     QTcpSocket *socket = (QTcpSocket*)sender();
     std::string str;
-    QByteArray dataGet;
-    QDataStream stream(&dataGet, QIODevice::ReadOnly);
-    stream.setVersion(QDataStream::Qt_5_15);
-    while (socket->canReadLine())
+    QByteArray dataGet = 0;
+    while (socket->bytesAvailable() > 0)
         {
-            str = "";
-            dataGet = socket->readLine(20);
-            str = (dataGet.constData(), dataGet.length());
-            messageToClient(socket, str);
+            dataGet += socket->readAll();
         }
+    socket->write(dataGet);
+    qDebug() << dataGet;
+    str = dataGet.toStdString();
+    messageToClient(socket, str);
 }
 
 void Server::messageToClient(QTcpSocket *socket, const std::string& clientString)
 {
-    QString SomePrefix = "prefix";
-    QByteArray data;
-    QDataStream stream(&data, QIODevice::WriteOnly);
-    stream.setVersion(QDataStream::Qt_5_15);
-    stream << quint16(0) << QString::fromStdString(clientString) + SomePrefix << "\n";
-    stream.device()->seek(0);   // set current, (write/read) from pos
-    stream << quint16(data.size() - sizeof(quint16));
-
+    QByteArray data(clientString.c_str(), clientString.length());
     socket->write(data);
 }
 

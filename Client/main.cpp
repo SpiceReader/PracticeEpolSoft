@@ -10,8 +10,13 @@ int main(int argc, char *argv[])
     w.show();
 
     QTcpSocket clientsocket;
+    QByteArray d, data = "String";
     clientsocket.connectToHost(QHostAddress("127.0.0.1"), 666);
-    clientsocket.write("TheString");
+    clientsocket.write(data);
+    data = "String111";
+    clientsocket.write(data);
+    data = "String222";
+    clientsocket.write(data);
 
     return a.exec();
 }
