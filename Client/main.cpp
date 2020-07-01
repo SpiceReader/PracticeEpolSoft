@@ -2,9 +2,11 @@
 #include "QTcpSocket"
 #include <QApplication>
 #include "QTcpServer"
+#include "INetworkMessage.h"
 
 int main(int argc, char *argv[])
 {
+    INetworkMessage message;
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
