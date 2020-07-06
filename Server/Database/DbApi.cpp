@@ -71,7 +71,7 @@ Task* DbApi::getTaskById(unsigned int id){
         gettedTask->setTaskDescription(query.value(rec.indexOf("description")).toString().toStdString());
 
         std::string taskStatus = query.value(rec.indexOf("status")).toString().toStdString();
-        gettedTask->setTaskId(stringStatusToEnumStatus[taskStatus]);
+        gettedTask->setTaskStatus(stringStatusToEnumStatus[taskStatus]);
     }
 
     return gettedTask;
