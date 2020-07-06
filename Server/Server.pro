@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui sql
 
 QT += network
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -19,12 +19,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     Core/Server.cpp \
     Core/ThreadPool.cpp \
+    Database/DbApi.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     Core/Server.h \
     Core/ThreadPool.h \
+    Database/DbApi.h \
     mainwindow.h
 
 FORMS += \
@@ -57,6 +59,9 @@ defineTest(copyToDestDir) {
 
     export(QMAKE_POST_LINK)
 }
+
+INCLUDEPATH += ../Network/include/
+LIBS += -L"$$shell_path($$_PRO_FILE_PWD_)/../Network/lib" -lLibNetwork
 
 copyToDestDir($$OTHER_FILES, $$OUT_PWD/debug/)
 copyToDestDir($$OTHER_FILES, $$OUT_PWD/release/)

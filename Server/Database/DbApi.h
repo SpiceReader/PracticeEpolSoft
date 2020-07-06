@@ -1,9 +1,10 @@
 #ifndef DBAPI_H
 #define DBAPI_H
 
-#include <TaskHandler/Task.h>
+#include <Task/Task.h>
 
 #include <QtSql>
+#include <map>
 
 /**
  * @brief Provides single access to database
@@ -13,6 +14,8 @@ class DbApi
     static QSqlDatabase db;
     static bool isOpen;
     DbApi() = default;
+    static std::map<Task::Status, std::string> enumStatusToStringStatus;
+    static std::map<std::string, Task::Status> stringStatusToEnumStatus;
 public:
     /**
      * @brief Open single connection to database
@@ -38,6 +41,12 @@ public:
      * @return task from database
      */
     static Task* getTaskById(unsigned int id);
+
+    /**
+     * @brief Get all tasks from database
+     * @return vector of tasks from database
+     */
+    static std::vector<Task> getAllTasks();
 
     /**
      * @brief Insert task to database
