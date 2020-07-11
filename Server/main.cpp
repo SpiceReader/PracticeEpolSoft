@@ -96,8 +96,9 @@ int main(int argc, char *argv[])
         std::cout << "Json after conversion: " << valueAfterParsing << std::endl;
     }
 
-    /*QApplication a(argc, argv);
+    QApplication a(argc, argv);
     MainWindow w;
+    Server ser(666);
     w.show();
-    return a.exec();*/
+    return a.exec();
 }

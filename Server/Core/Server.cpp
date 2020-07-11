@@ -34,7 +34,7 @@ void Server::getMessage()
 {
     qDebug("Reading data!!");
     QTcpSocket *socket = (QTcpSocket*)sender();
-    std::string str;
+    std::string str = "";
     QByteArray dataGet = 0;
     while (socket->bytesAvailable() > 0)
         {
@@ -49,7 +49,9 @@ void Server::getMessage()
 void Server::messageToClient(QTcpSocket *socket, const std::string& clientString)
 {
     QByteArray data(clientString.c_str(), clientString.length());
+    qDebug() << data;
     socket->write(data);
+    socket->close();
 }
 
 void Server::clientDisconnect()
