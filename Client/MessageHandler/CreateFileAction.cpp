@@ -13,7 +13,7 @@ void CreateFileAction::executeAction()
 {
     CreateTaskArguments arg(mTask);
     Request req(Request::CREATE_TASK, arg.getJsonArguments());
-    //MessageHandler::getInstance()->sendMessage(req, this)
+    MessageHandler::getInstance()->sendMessage(req, this);
 }
 
 void CreateFileAction::setCallback(std::function<void (const Response &)> func)
@@ -25,7 +25,6 @@ void CreateFileAction::messageResponseReceived(const Response resp)
 {
     //if (resp)
     {
-
         mFunction(resp);
     }
 }

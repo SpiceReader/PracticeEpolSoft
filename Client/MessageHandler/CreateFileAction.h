@@ -14,7 +14,7 @@ public:
     void setCallback(std::function<void(const Response&)> func);
 
     // IMessageObserver interface
-public:
+private:
     void messageResponseReceived(const Response resp);
 
     Task mTask;

@@ -40,7 +40,6 @@ void Server::getMessage()
         {
             dataGet += socket->readAll();
         }
-    socket->write(dataGet);
     qDebug() << dataGet;
     str = dataGet.toStdString();
     messageToClient(socket, str);
@@ -49,7 +48,7 @@ void Server::getMessage()
 void Server::messageToClient(QTcpSocket *socket, const std::string& clientString)
 {
     QByteArray data(clientString.c_str(), clientString.length());
-    qDebug() << data;
+    //qDebug() << data;
     socket->write(data);
     socket->close();
 }

@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 
     MessageHandler MH;
     MH.getInstance();
-    MH.sendMessage();
+    //MH.sendMessage();
 
     /*QTcpSocket clientsocket;
     QByteArray d, data = "String";

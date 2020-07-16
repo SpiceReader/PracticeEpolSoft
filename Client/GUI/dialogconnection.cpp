@@ -29,5 +29,7 @@ void DialogConnection::buttonEnabled(){
 
 void DialogConnection::on_buttonOk_clicked()
 {
+    MessageHandler::getInstance()->setServerIp(ui->IpServer->text().toStdString());
+    MessageHandler::getInstance()->setServerPort(ui->numPort->text().toInt());
     //set ip server and port
 }

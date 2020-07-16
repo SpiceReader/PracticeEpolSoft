@@ -6,7 +6,6 @@
 #include "Request/Request.h"
 #include "Response/Response.h"
 #include "Request/CreateTaskArguments.h"
-#include <thread>
 #include <QAbstractSocket>
 #include <QTcpSocket>
 #include <string>
@@ -44,8 +43,11 @@ public:
         * @param observer IMessageObserver to notify sender of message about answer from server
     */
 
-    //void sendMessage(Request request, IMessageObserver* observer);
-    void sendMessage();
+    void sendMessage(Request request, IMessageObserver* observer);
+    //void sendMessage();
+    void setServerIp(std::string serverIp);
+
+    void setServerPort(unsigned int serverPort);
 
 private slots:
     void readFromServer();
@@ -61,11 +63,7 @@ private:
 
     std::string getServerIp() const;
 
-    void setServerIp(std::string serverIp);
-
     unsigned int getServerPort() const;
-
-    void setServerPort(unsigned int serverPort);
 
     Response getResponce() const;
 

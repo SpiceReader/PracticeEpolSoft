@@ -2,38 +2,34 @@
 
 MessageHandler* MessageHandler::pInstance = nullptr;
 
-void MessageHandler::sendMessage()
-//void MessageHandler::sendMessage(Request request, IMessageObserver* observer)
+//void MessageHandler::sendMessage()
+void MessageHandler::sendMessage(Request request, IMessageObserver* observer) // перенести код в readFromServer
 {
     if (getServerIp() != "" && getServerPort() != 0)
     {
-        CreateTaskArguments arguments("task_name", "task_description", Task::Status::OPEN);
+        /*CreateTaskArguments arguments("task_name", "task_description", Task::Status::OPEN);
         Json::Value jsonArguments = arguments.getJsonArguments();
-        Request request(Request::CommandCode::CREATE_TASK, jsonArguments);
+        Request request(Request::CommandCode::CREATE_TASK, jsonArguments);*/
         Json::Value jsonMessage = request.getMessage();
         Json::FastWriter writter;
         std::string stringMessage = writter.write(jsonMessage);
         QByteArray req(stringMessage.c_str(), stringMessage.length());
         //QByteArray req(jsonMessage.asString().c_str(), jsonMessage.asString().length()); // get std::string from Json::Value
 
-        QByteArray data = "String";
         socket = new QTcpSocket(this);
         socket->connectToHost ( QHostAddress(QString::fromStdString(getServerIp())), getServerPort());
-        //socket->connectToHost (QHostAddress("127.0.0.1"), 666);
+        socket->write(req);
 
-
-        //socket->write(req);
-        socket->write(data);
-        socket->write("Hello");
-
+        //socket->write(data);
+        //socket->write("Hello");
 
         connect(socket, SIGNAL(readyRead()), this, SLOT(readFromServer()));
         connect(socket, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error), this, &MessageHandler::displayError);
 
-      /*if (observer != nullptr)
+        if (observer != nullptr)
         {
             observer->messageResponseReceived(getResponce());
-        }*/
+        }
     }
     else {
         QMessageBox::information(this, tr("Client"),
@@ -68,6 +64,11 @@ void MessageHandler::readFromServer()
     Response resp(valueAfterParsing);
 
     setResponce(resp);
+
+    /*if (observer != nullptr)
+    {
+        observer->messageResponseReceived(getResponce());
+    }*/
 }
 
 void MessageHandler::displayError(QAbstractSocket::SocketError socketError)

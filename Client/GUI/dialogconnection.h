@@ -2,6 +2,7 @@
 #define DIALOGCONNECTION_H
 
 #include <QDialog>
+#include "MessageHandler/MessageHandler.h"
 
 namespace Ui {
 class DialogConnection;
