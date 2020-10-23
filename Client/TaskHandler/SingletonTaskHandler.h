@@ -20,45 +20,12 @@
 class SingletonTaskHandler
 {
 public:
-    /**
-     * @return instance of SingletonTaskHandler
-     */
     static SingletonTaskHandler* getInstance();
-
-    /**
-     * @brief Deletes instance of SingletonTaskHandler
-     *        Usually used at the end of program execution
-     */
     static void deleteInstance();
-
-    /**
-     * @brief Adds task with provided ID to list of tasks
-     * @param task Task to be added
-     * @return true if task was added, false if task with such ID already exist
-     */
     bool addTask(const Task& task);
-
-    /**
-     * @brief Updates task with provided ID in list of tasks
-     * @param task Task to be updated
-     * @return true if task is exist and updated, false otherwise
-     */
     bool updateTask(const Task& task);
-
-    /**
-     * @brief Deletes task with provided ID from list of tasks
-     * @param id Id of task to be deleted
-     */
     void deleteTaskById(unsigned int id);
-
-    /**
-     * @brief clears vector of tasks
-     */
     void clearTasks();
-
-    /**
-     * @return vector of tasks
-     */
     std::vector<Task> getTasks() const;
 
 private:
